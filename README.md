@@ -255,3 +255,16 @@ new users to test it.
 To turn the docker containers off after you're done developing, just run:
 
 ```docker-compose down```
+
+## Running other commands
+
+To run 'weblab' management commands as in other sections of the doc, you can simply do:
+
+```docker-compose exec lab flask weblab``
+
+(and add parameters as needed).
+
+Likewise, if you want to enter the docker container itself in case you need to check what is going on, you can:
+
+```docker-compose exec lab bash```
+
