@@ -1,0 +1,44 @@
+# File for running the lab development environment. It assumes the current directory contains
+# the lab source.
+
+version: '3'
+services:
+
+  ###############################
+  # Built from local Dockerfile #
+  ###############################
+  lab:
+    # Build the Dockerfile in this directory.
+    build: .
+    # Mount this directory as a volume at /app
+    volumes:
+      - '.:/app'
+    
+    # Make all commands relative to our application directory
+    working_dir: /app
+
+    # Set some environment variables to be used in the application
+    environment:
+      REDIS_URL: 'redis://redis_db:6379'
+      WEBLAB_REDIS_URL: 'redis://redis_db:6379'
+      SOCKETIO_REDIS_URL: 'redis://redis_db:6379'
+      FLASK_APP: autoapp.py
+
+    # The process that runs in the container.
+    # Remember, a container runs only ONE process.
+    command: /bin/bash -c "python run_debug.py"
+
+    # Make the port available on the host machine
+    # so that we can navigate there with our web browser.
+    ports:
+      - '5000:5000'
+
+    # Link this container to other containers to create
+    # a network interface.
+    links:
+      - redis_db
+
+  redis_db:
+    image: redis
+    ports:
+      - '6379:6379'
