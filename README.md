@@ -213,3 +213,45 @@ Finally, you have further information on WebLab-Deusto for unmanaged servers [in
 
 
 # Developing with Docker
+
+Docker can be used to start developing in a particularly fast way, without needing to set a development environment in your own machine.
+
+## Setting up the environment
+
+- Install git.
+- Install the community version of docker.
+- Clone this repository somewhere.
+
+## Run the lab server
+
+The laboratory server for development can be run from Docker. Docker will run all the dependencies (Python, the virtual env, etc.).
+The source code, however, will be located in a local folder in your machine, so that you can change it easily. Just go to the folder
+where you have cloned this repository, and run:
+
+```docker-compose up```
+
+This will build the docker images, and run the containers that are needed. The laboratory server will be listening in your local port 5000, so you could simply go to http://localhost:5000 with your browser. Note, however, that you will get redirected out, because
+a fake session will not be ready.
+
+## Try the lab server
+
+To try the lab server you need to start a fake session. A fake session simply involves simulating that a student has
+entered your laboratory, so that you can test that everything works as expected. To do so, run:
+
+```docker-compose exec lab flask weblab fake new --assigned-time 3600```
+
+That command will connect to the docker container and run the command to simulate a user, assigning a maximumt ime of 3600 seconds.
+The output should be an URL similar to: http://localhost:5000/callback/5HRFqybZe_Is4cXeNMBtsG0i1HOv34jFBUuvgMKmbRw
+
+You should be able to open it in your browser, and test your lab.
+
+## Developing your lab
+
+Simply modify your local source code, and the changes should take place automatically. Run the previous command to simulate
+new users to test it.
+
+## Turning the lab off
+
+To turn the docker containers off after you're done developing, just run:
+
+```docker-compose down```
